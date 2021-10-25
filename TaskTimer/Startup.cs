@@ -27,14 +27,21 @@ namespace TaskTimer
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ApplicationDbContext>(options =>
+            AppDomain.CurrentDomain.SetData("DataDirectory",
+                AppDomain.CurrentDomain.BaseDirectory + "App_Data");
+
+            services.AddDbContext<TaskTimerDbContext>(options =>
                 options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
+                    Configuration.GetConnectionString("TaskTimerLocalDBConnection")));
+
             services.AddDatabaseDeveloperPageExceptionFilter();
 
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
+                .AddEntityFrameworkStores<TaskTimerDbContext>();
             services.AddControllersWithViews();
+
+            services.AddHsts(options => options.MaxAge = TimeSpan.FromDays(1));
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -49,6 +56,7 @@ namespace TaskTimer
             {
                 app.UseExceptionHandler("/Home/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                // Set to 1 day in ConfigureServices()
                 app.UseHsts();
             }
             app.UseHttpsRedirection();

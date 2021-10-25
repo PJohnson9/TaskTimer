@@ -9,23 +9,20 @@ namespace TaskTimer.Models
 {
     public class Task
     {
-        //[Key]
-        //public Int32 ContactID { get; set; }
+        [Key]
+        public Int32 TaskID { get; set; }
 
 
         [Required]
-        [Display(Name = "First Name")]
-        public String FirstName { get; set; }
+        [Display(Name = "Task Name")]
+        public String Name { get; set; }
 
 
         [Required]
-        [Display(Name = "Last Name")]
-        public String LastName { get; set; }
+        //[Display(Name = "Task Category")]
+        public TaskCategory Category { get; set; }
 
 
-        [Required]
-        [Display(Name = "E-Mail Address")]
-        [EmailAddress(ErrorMessage = "Invalid E-Mail Address")]
-        public String EMail { get; set; }
+        public IEnumerable<WorkSession> Sessions { get; set; }
     }
 }
