@@ -233,11 +233,14 @@ namespace TaskTimer.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("UserID")
+                        .HasColumnType("int");
+
                     b.HasKey("TaskID");
 
                     b.HasIndex("CategoryTaskCategoryID");
 
-                    b.ToTable("Task");
+                    b.ToTable("Tasks");
                 });
 
             modelBuilder.Entity("TaskTimer.Models.TaskCategory", b =>
@@ -253,7 +256,7 @@ namespace TaskTimer.Data.Migrations
 
                     b.HasKey("TaskCategoryID");
 
-                    b.ToTable("TaskCategory");
+                    b.ToTable("TaskCategories");
                 });
 
             modelBuilder.Entity("TaskTimer.Models.WorkSession", b =>
@@ -272,14 +275,11 @@ namespace TaskTimer.Data.Migrations
                     b.Property<int>("TaskID")
                         .HasColumnType("int");
 
-                    b.Property<TimeSpan>("TimeSpan")
-                        .HasColumnType("time");
-
                     b.HasKey("SessionID");
 
                     b.HasIndex("TaskID");
 
-                    b.ToTable("WorkSession");
+                    b.ToTable("WorkSessions");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

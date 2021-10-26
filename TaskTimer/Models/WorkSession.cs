@@ -22,6 +22,7 @@ namespace TaskTimer.Models
         [Display(Name = "End Time")]
         public DateTime End { get; set; }
 
+        [NotMapped]
         public TimeSpan TimeSpan {
             get { return End - Start; }
             set { this.End = Start.Add(value); }

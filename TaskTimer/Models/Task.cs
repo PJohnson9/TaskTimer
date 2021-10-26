@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+
 namespace TaskTimer.Models
 {
     public class Task
@@ -12,6 +13,9 @@ namespace TaskTimer.Models
         [Key]
         public Int32 TaskID { get; set; }
 
+        [Required]
+        //[ScaffoldColumn(false)]
+        public Int32 UserID { get; set; }
 
         [Required]
         [Display(Name = "Task Name")]

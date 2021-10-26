@@ -9,6 +9,9 @@ namespace TaskTimer.Models
 {
     public class TaskCategory
     {
+        public TaskCategory() { }
+        public TaskCategory(String category) { Category = category; }
+
         [Key]
         public Int32 TaskCategoryID { get; set; }
 
