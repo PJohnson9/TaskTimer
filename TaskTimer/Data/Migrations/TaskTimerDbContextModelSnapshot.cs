@@ -15,7 +15,7 @@ namespace TaskTimer.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasDefaultSchema("TaskTimer")
+                .HasDefaultSchema("Identity")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.11")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -233,7 +233,7 @@ namespace TaskTimer.Data.Migrations
 
                     b.HasKey("TaskCategoryID");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Category", "TaskTimer");
                 });
 
             modelBuilder.Entity("TaskTimer.Models.WorkSession", b =>
@@ -256,7 +256,7 @@ namespace TaskTimer.Data.Migrations
 
                     b.HasIndex("TaskID");
 
-                    b.ToTable("Sessions");
+                    b.ToTable("Session", "TaskTimer");
                 });
 
             modelBuilder.Entity("TaskTimer.Models.WorkTask", b =>
@@ -283,7 +283,7 @@ namespace TaskTimer.Data.Migrations
 
                     b.HasIndex("CategoryID");
 
-                    b.ToTable("Tasks");
+                    b.ToTable("Task", "TaskTimer");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

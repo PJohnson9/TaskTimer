@@ -19,9 +19,16 @@ namespace TaskTimer.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            String identity_schema = "Identity", 
+                   data_schema = "TaskTimer";
+
             base.OnModelCreating(builder);
 
-            builder.HasDefaultSchema("TaskTimer");
+            builder.HasDefaultSchema(identity_schema);
+
+            builder.Entity<WorkTask>().ToTable("Task", data_schema);
+            builder.Entity<TaskCategory>().ToTable("Category", data_schema);
+            builder.Entity<WorkSession>().ToTable("Session", data_schema);
         }
     }
 }
