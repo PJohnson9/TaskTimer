@@ -26,6 +26,9 @@ namespace TaskTimer.Models
         //[Display(Name = "Task Category")]
         public TaskCategory Category { get; set; }
 
+        [ForeignKey("Category")]
+        public Int32 CategoryID { get; set; }
+
         public Boolean Completed { get; set; }
 
 

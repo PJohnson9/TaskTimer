@@ -17,5 +17,11 @@ namespace TaskTimer.Data
         public DbSet<TaskCategory> Categories { get; set; }
         public DbSet<WorkSession> Sessions { get; set; }
 
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+
+            builder.HasDefaultSchema("TaskTimer");
+        }
     }
 }

@@ -15,6 +15,7 @@ namespace TaskTimer.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
+                .HasDefaultSchema("TaskTimer")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.11")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -265,7 +266,7 @@ namespace TaskTimer.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("CategoryTaskCategoryID")
+                    b.Property<int>("CategoryID")
                         .HasColumnType("int");
 
                     b.Property<bool>("Completed")
@@ -280,7 +281,7 @@ namespace TaskTimer.Data.Migrations
 
                     b.HasKey("TaskID");
 
-                    b.HasIndex("CategoryTaskCategoryID");
+                    b.HasIndex("CategoryID");
 
                     b.ToTable("Tasks");
                 });
@@ -351,7 +352,9 @@ namespace TaskTimer.Data.Migrations
                 {
                     b.HasOne("TaskTimer.Models.TaskCategory", "Category")
                         .WithMany()
-                        .HasForeignKey("CategoryTaskCategoryID");
+                        .HasForeignKey("CategoryID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Category");
                 });

@@ -54,7 +54,7 @@ namespace TaskTimer.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("SessionID,Start,End")] WorkSession workSession)
+        public async Task<IActionResult> Create([Bind("Start,End")] WorkSession workSession)
         {
             if (ModelState.IsValid)
             {
