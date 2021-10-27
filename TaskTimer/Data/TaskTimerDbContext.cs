@@ -13,9 +13,9 @@ namespace TaskTimer.Data
         public TaskTimerDbContext (DbContextOptions<TaskTimerDbContext> options) : base(options) { }
 
 
-        public DbSet<Task> Tasks { get; set; }
-        public DbSet<TaskCategory> TaskCategories { get; set; }
-        public DbSet<WorkSession> WorkSessions { get; set; }
+        public DbSet<WorkTask> Tasks { get; set; }
+        public DbSet<TaskCategory> Categories { get; set; }
+        public DbSet<WorkSession> Sessions { get; set; }
 
     }
 }

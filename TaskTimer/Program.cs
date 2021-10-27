@@ -17,7 +17,7 @@ namespace TaskTimer
         public static void Main(string[] args)
         {
             var host = CreateHostBuilder(args).Build();
-            //SeedDbIfEmpty(host);  
+            SeedDbIfEmpty(host);  
             host.Run();
         }
 

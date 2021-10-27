@@ -12,7 +12,7 @@ namespace TaskTimer.Data
         {
             context.Database.EnsureCreated();
 
-            if (context.TaskCategories.Any())
+            if (context.Categories.Any())
                 return; // Existing data
 
             TaskCategory[] categories = new TaskCategory[]
@@ -24,7 +24,7 @@ namespace TaskTimer.Data
 
             foreach (TaskCategory c in categories)
             {
-                context.TaskCategories.Add(c);
+                context.Categories.Add(c);
             }
             context.SaveChanges();
         }

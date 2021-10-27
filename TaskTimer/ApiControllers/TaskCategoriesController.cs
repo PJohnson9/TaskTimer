@@ -10,8 +10,11 @@ using TaskTimer.Models;
 
 namespace TaskTimer
 {
+
     [Route("api/[controller]")]
+    //[Route("api/TaskCategories")]
     [ApiController]
+    /// TaskCategories API only supports retrieving the list of categories or individual categories from an ID
     public class TaskCategoriesController : ControllerBase
     {
         private readonly TaskTimerDbContext _context;
@@ -25,14 +28,14 @@ namespace TaskTimer
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TaskCategory>>> GetTaskCategory()
         {
-            return await _context.TaskCategories.ToListAsync();
+            return await _context.Categories.ToListAsync();
         }
 
         // GET: api/TaskCategories/5
         [HttpGet("{id}")]
         public async Task<ActionResult<TaskCategory>> GetTaskCategory(int id)
         {
-            var taskCategory = await _context.TaskCategories.FindAsync(id);
+            var taskCategory = await _context.Categories.FindAsync(id);
 
             if (taskCategory == null)
             {
@@ -107,7 +110,7 @@ namespace TaskTimer
 
         private bool TaskCategoryExists(int id)
         {
-            return _context.TaskCategories.Any(e => e.TaskCategoryID == id);
+            return _context.Categories.Any(e => e.TaskCategoryID == id);
         }
     }
 }

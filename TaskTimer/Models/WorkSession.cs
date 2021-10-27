@@ -13,18 +13,21 @@ namespace TaskTimer.Models
         public Int32 SessionID { get; set; }
 
         [Required]
-        public Task Task { get; set; }
+        public virtual WorkTask Task { get; set; }  // TODO: Is lazy loading supported yet in EF Core?
+
+        [ForeignKey("Task")]
+        public Int32 TaskID { get; set; }
 
         [Display(Name = "Start Time")]
         [DataType(DataType.DateTime)]
         public DateTime Start { get; set; }
 
         [Display(Name = "End Time")]
-        public DateTime End { get; set; }
+        public DateTime? End { get; set; }
 
         [NotMapped]
         public TimeSpan TimeSpan {
-            get { return End - Start; }
+            get { return (End ?? DateTime.Now) - Start; }  // If End is null use elapsed time since start
             set { this.End = Start.Add(value); }
         }
     }

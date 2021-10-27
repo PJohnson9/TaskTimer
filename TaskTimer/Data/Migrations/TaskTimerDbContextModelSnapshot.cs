@@ -219,30 +219,6 @@ namespace TaskTimer.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("TaskTimer.Models.Task", b =>
-                {
-                    b.Property<int>("TaskID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("CategoryTaskCategoryID")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("UserID")
-                        .HasColumnType("int");
-
-                    b.HasKey("TaskID");
-
-                    b.HasIndex("CategoryTaskCategoryID");
-
-                    b.ToTable("Tasks");
-                });
-
             modelBuilder.Entity("TaskTimer.Models.TaskCategory", b =>
                 {
                     b.Property<int>("TaskCategoryID")
@@ -256,7 +232,7 @@ namespace TaskTimer.Data.Migrations
 
                     b.HasKey("TaskCategoryID");
 
-                    b.ToTable("TaskCategories");
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("TaskTimer.Models.WorkSession", b =>
@@ -266,7 +242,7 @@ namespace TaskTimer.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("End")
+                    b.Property<DateTime?>("End")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("Start")
@@ -279,7 +255,34 @@ namespace TaskTimer.Data.Migrations
 
                     b.HasIndex("TaskID");
 
-                    b.ToTable("WorkSessions");
+                    b.ToTable("Sessions");
+                });
+
+            modelBuilder.Entity("TaskTimer.Models.WorkTask", b =>
+                {
+                    b.Property<int>("TaskID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("CategoryTaskCategoryID")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Completed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserID")
+                        .HasColumnType("int");
+
+                    b.HasKey("TaskID");
+
+                    b.HasIndex("CategoryTaskCategoryID");
+
+                    b.ToTable("Tasks");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -333,18 +336,9 @@ namespace TaskTimer.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("TaskTimer.Models.Task", b =>
-                {
-                    b.HasOne("TaskTimer.Models.TaskCategory", "Category")
-                        .WithMany()
-                        .HasForeignKey("CategoryTaskCategoryID");
-
-                    b.Navigation("Category");
-                });
-
             modelBuilder.Entity("TaskTimer.Models.WorkSession", b =>
                 {
-                    b.HasOne("TaskTimer.Models.Task", "Task")
+                    b.HasOne("TaskTimer.Models.WorkTask", "Task")
                         .WithMany("Sessions")
                         .HasForeignKey("TaskID")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -353,7 +347,16 @@ namespace TaskTimer.Data.Migrations
                     b.Navigation("Task");
                 });
 
-            modelBuilder.Entity("TaskTimer.Models.Task", b =>
+            modelBuilder.Entity("TaskTimer.Models.WorkTask", b =>
+                {
+                    b.HasOne("TaskTimer.Models.TaskCategory", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryTaskCategoryID");
+
+                    b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("TaskTimer.Models.WorkTask", b =>
                 {
                     b.Navigation("Sessions");
                 });
