@@ -19,5 +19,7 @@ namespace TaskTimer.Models
         [Display(Name = "Task Category")]
         public String Category { get; set; }
 
+        public ICollection<WorkTask> Tasks { get; set; }
+
     }
 }

@@ -24,7 +24,7 @@ namespace TaskTimer.Models
 
         [Required]
         //[Display(Name = "Task Category")]
-        public TaskCategory Category { get; set; }
+        public virtual TaskCategory Category { get; set; }
 
         [ForeignKey("Category")]
         public Int32 CategoryID { get; set; }

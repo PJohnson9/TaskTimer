@@ -16,6 +16,7 @@ namespace TaskTimer.Models
         public virtual WorkTask Task { get; set; }  // TODO: Is lazy loading supported yet in EF Core?
 
         [ForeignKey("Task")]
+        [Display(Name = "Task")]
         public Int32 TaskID { get; set; }
 
         [Display(Name = "Start Time")]

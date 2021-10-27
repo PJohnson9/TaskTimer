@@ -10,23 +10,23 @@ using TaskTimer.Models;
 
 namespace TaskTimer.Controllers
 {
-    public class SessionsController : Controller
+    public class TasksController : Controller
     {
         private readonly TaskTimerDbContext _context;
 
-        public SessionsController(TaskTimerDbContext context)
+        public TasksController(TaskTimerDbContext context)
         {
             _context = context;
         }
 
-        // GET: Sessions
+        // GET: Tasks
         public async Task<IActionResult> Index()
         {
-            var taskTimerDbContext = _context.Sessions.Include(w => w.Task);
+            var taskTimerDbContext = _context.Tasks.Include(w => w.Category);
             return View(await taskTimerDbContext.ToListAsync());
         }
 
-        // GET: Sessions/Details/5
+        // GET: Tasks/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -34,46 +34,46 @@ namespace TaskTimer.Controllers
                 return NotFound();
             }
 
-            var workSession = await _context.Sessions
-                .Include(w => w.Task)
-                .FirstOrDefaultAsync(m => m.SessionID == id);
-            if (workSession == null)
+            var workTask = await _context.Tasks
+                .Include(w => w.Category)
+                .FirstOrDefaultAsync(m => m.TaskID == id);
+            if (workTask == null)
             {
                 return NotFound();
             }
 
-            return View(workSession);
+            return View(workTask);
         }
 
-        // GET: Sessions/Create
+        // GET: Tasks/Create
         public IActionResult Create()
         {
-            ViewData["TaskID"] = new SelectList(_context.Tasks, "TaskID", "Name");
+            ViewData["CategoryID"] = new SelectList(_context.Categories, "TaskCategoryID", "Category");
             return View();
         }
 
-        // POST: Sessions/Create
+        // POST: Tasks/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("SessionID,TaskID,Start,End")] WorkSession workSession)
+        public async Task<IActionResult> Create([Bind("TaskID,UserID,Name,CategoryID,Category,Completed")] WorkTask workTask)
         {
             // TODO: Figure out why I have to do this.  
-            ModelState.ClearValidationState("Task");
-            ModelState.MarkFieldValid("Task");
+            ModelState.ClearValidationState("Category");
+            ModelState.MarkFieldValid("Category");
 
             if (ModelState.IsValid)
             {
-                _context.Add(workSession);
+                _context.Add(workTask);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["TaskID"] = new SelectList(_context.Tasks, "TaskID", "Name", workSession.TaskID);
-            return View(workSession);
+            ViewData["CategoryID"] = new SelectList(_context.Categories, "TaskCategoryID", "Category", workTask.CategoryID);
+            return View(workTask);
         }
 
-        // GET: Sessions/Edit/5
+        // GET: Tasks/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -81,37 +81,41 @@ namespace TaskTimer.Controllers
                 return NotFound();
             }
 
-            var workSession = await _context.Sessions.FindAsync(id);
-            if (workSession == null)
+            var workTask = await _context.Tasks.FindAsync(id);
+            if (workTask == null)
             {
                 return NotFound();
             }
-            ViewData["TaskID"] = new SelectList(_context.Tasks, "TaskID", "Name", workSession.TaskID);
-            return View(workSession);
+            ViewData["CategoryID"] = new SelectList(_context.Categories, "TaskCategoryID", "Category", workTask.CategoryID);
+            return View(workTask);
         }
 
-        // POST: Sessions/Edit/5
+        // POST: Tasks/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("SessionID,TaskID,Start,End")] WorkSession workSession)
+        public async Task<IActionResult> Edit(int id, [Bind("TaskID,UserID,Name,CategoryID,Completed")] WorkTask workTask)
         {
-            if (id != workSession.SessionID)
+            if (id != workTask.TaskID)
             {
                 return NotFound();
             }
+
+            // TODO: Figure out why I have to do this.  
+            ModelState.ClearValidationState("Category");
+            ModelState.MarkFieldValid("Category");
 
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(workSession);
+                    _context.Update(workTask);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!WorkSessionExists(workSession.SessionID))
+                    if (!WorkTaskExists(workTask.TaskID))
                     {
                         return NotFound();
                     }
@@ -122,11 +126,11 @@ namespace TaskTimer.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["TaskID"] = new SelectList(_context.Tasks, "TaskID", "Name", workSession.TaskID);
-            return View(workSession);
+            ViewData["CategoryID"] = new SelectList(_context.Categories, "TaskCategoryID", "Category", workTask.CategoryID);
+            return View(workTask);
         }
 
-        // GET: Sessions/Delete/5
+        // GET: Tasks/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -134,31 +138,31 @@ namespace TaskTimer.Controllers
                 return NotFound();
             }
 
-            var workSession = await _context.Sessions
-                .Include(w => w.Task)
-                .FirstOrDefaultAsync(m => m.SessionID == id);
-            if (workSession == null)
+            var workTask = await _context.Tasks
+                .Include(w => w.Category)
+                .FirstOrDefaultAsync(m => m.TaskID == id);
+            if (workTask == null)
             {
                 return NotFound();
             }
 
-            return View(workSession);
+            return View(workTask);
         }
 
-        // POST: Sessions/Delete/5
+        // POST: Tasks/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var workSession = await _context.Sessions.FindAsync(id);
-            _context.Sessions.Remove(workSession);
+            var workTask = await _context.Tasks.FindAsync(id);
+            _context.Tasks.Remove(workTask);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool WorkSessionExists(int id)
+        private bool WorkTaskExists(int id)
         {
-            return _context.Sessions.Any(e => e.SessionID == id);
+            return _context.Tasks.Any(e => e.TaskID == id);
         }
     }
 }
